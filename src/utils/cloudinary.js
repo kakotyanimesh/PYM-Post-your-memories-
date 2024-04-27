@@ -7,19 +7,23 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
-const uplodaOnCloudinary = async (localFilePath) => {
+const uploadToCloudinary = async (localFilePath) => {
     try {
         if(!localFilePath) return null
         const response = await cloudinary.uploader.upload(localFilePath, {
             resource_type:'auto'
         })
-        console.log(`file uploded successfully at cloudinary at url`, response.url);
-        return null
+        // uploading the file to cloudinary
+
+        console.log(`file uploaded succesfully at url: `, response.url);
+        return response
+
     } catch (error) {
-        fs.unlinkSync(localFilePath)
+        fs.unlinkSync(localFilePath) 
+        // to delete the temporay file if there is an occurance of error while uploading to cloudinary -> to maintain the cleanliness of our file system
+        
         return null
     }
 }
 
-
-export {uplodaOnCloudinary}
+export {uploadToCloudinary}
